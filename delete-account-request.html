@@ -415,7 +415,7 @@
 </footer>
 
 <script>
-function handleSubmit(event) {
+async function handleSubmit(event) {
   event.preventDefault();
 
   // Get form data
@@ -427,8 +427,15 @@ function handleSubmit(event) {
     timestamp: new Date().toISOString(),
   };
 
-  // In a real application, you would send this data to your server
-  console.log('Deletion request submitted:', data);
+  // Send to Google Sheet
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbz6XofQ4YpwPieda_0Xj4VAaVHQU4dvCqc91_mcL680X6Nm7yewOWcYPp-7YEZzTAaVIg/exec', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
 
   // Show success message
   const successMessage = document.getElementById('successMessage');
